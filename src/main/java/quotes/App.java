@@ -3,13 +3,68 @@
  */
 package quotes;
 
+import java.io.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
+
+    public static void main(String[] args) throws Exception {
+
+        printRandomObject(
+                jsonToQuote(
+                        App.getQuoteData()
+                )
+        );
+
+        Quote newQuote = new Quote("Richard", "hello");
     }
 
-    public static void main(String[] args) {
+    protected static String printRandomObject(Object[] objArray) {
 
-        System.out.println(new App().getGreeting());
+        int size = objArray.length;
+
+        int randomIndex = (int) Math.floor(Math.random() * size);
+
+        System.out.print(objArray[randomIndex].toString());
+        return objArray[randomIndex].toString();
+    }
+
+
+
+    protected static Object[] jsonToQuote(String string) {
+        Gson gson = new GsonBuilder().serializeNulls().create();
+
+        return gson.fromJson(string, Quote[].class);
+    }
+
+
+    public static class Quote {
+        public String author;
+        public String text;
+
+        public Quote(String author, String text) {
+            this.author = author;
+            this.text = text;
+        }
+
+        public String toString() {
+            return String.format("%s: %s", this.author, this.text);
+        }
+
+    }
+
+
+
+    protected static String getQuoteData() throws Exception {
+        File file = new File("./src/main/resources/recentquotes.json");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String st;
+        StringBuilder outputString = new StringBuilder();
+        while ((st = br.readLine()) != null) {
+            outputString.append(st);
+        }
+        return outputString.toString();
     }
 }
