@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AppTest {
-    public Object[] quoteArray;
+    private Object[] quoteArray;
     private App.Quote testQuote;
     private String quoteString;
 
@@ -18,7 +18,7 @@ public class AppTest {
         new App.Quote("Richard", "hello");
 
         quoteString = App.getQuoteData();
-        quoteArray = App.jsonToQuote(quoteString);
+        quoteArray = App.jsonToQuotes(quoteString);
 
         testQuote = new App.Quote("Richard Rider", "Please, please, you have to, I never ask you for anything, please just do it.");
         System.out.println("Quote Array was instanced.");
@@ -28,7 +28,7 @@ public class AppTest {
     public void testQuoteToString() {
 
         assertNotNull("printRandom object, when run on the entire array of JSON data, should return not null.",
-                App.printRandomObject(quoteArray));
+                App.getRandomObject(quoteArray));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class AppTest {
 
         assertEquals("printRandomObject, when run on a single object should return a string equivalent to the string above.",
                 expectedString,
-                App.printRandomObject(new Object[] {testQuote})
+                App.getRandomObject(new Object[] {testQuote})
         );
     }
 }
